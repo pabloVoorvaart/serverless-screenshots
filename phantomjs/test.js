@@ -8,9 +8,10 @@ var page = new WebPage();
 
 var WebPage = require('webpage');
 page = WebPage.create();
+page.viewportSize = { width: 1600, height: 900 };
 page.open(url);
 console.log(url);
 console.log(filename);
 page.onLoadFinished = function() {
-   page.render('/tmp/' + 'targetFilename' + '.png');
+   page.render('screenshot/' + 'targetFilename' + '.png');
    phantom.exit();}

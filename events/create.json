@@ -1,6 +1,6 @@
 {
   "queryStringParameters": {
-    "url": "dwaham%2C+nc"
+    "url": "https://www.yelp.com/search?find_desc=burgers+&find_loc=Raleigh%2C+NC&ns=1"
   },
   "apiKey": "test-invoke-api-key"
 }
