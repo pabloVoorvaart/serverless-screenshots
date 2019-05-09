@@ -1,0 +1,60 @@
+service: screenshots
+
+stageVariables:
+  # timeout for phantomjs
+  screenshotTimeout: 30000
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  environment:
+    bucketName: ${self:resources.Resources.uploadBucket.Properties.BucketName}
+  apiKeys:
+    - api-key_${self:provider.stage}
+  # We need to give the lambda functions access to list and write to our bucket, it needs:
+  # - to be able to 'list' the bucket
+  # - to be able to upload a file (PutObject)
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        - "s3:Put*"
+        - "s3:GetObject"
+      Resource:
+        - "arn:aws:s3:::${self:resources.Resources.uploadBucket.Properties.BucketName}"
+        - "arn:aws:s3:::${self:resources.Resources.uploadBucket.Properties.BucketName}/*"
+
+functions:
+  takeScreenshot:
+    handler: handler.take_screenshot
+    memorySize: 2048
+    timeout: 60
+    events:
+      - http:
+          path: screenshots
+          method: post
+          # Marking the function as private will require an api-key
+          private: true 
+
+          # The url parameter is mandatory
+          request:
+            parameters:
+              querystrings:
+                url: true
+
+resources:
+  Outputs:
+    ScreenshotBucket:
+      Description: "Screenshot bucket name"
+      Value: ${self:resources.Resources.uploadBucket.Properties.BucketName}
+ 
+  Resources:
+    uploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-storage-for-fiverr-pablovoorvaart
+
+plugins:
+  - serverless-plugin-stack-outputs
