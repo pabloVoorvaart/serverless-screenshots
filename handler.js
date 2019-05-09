@@ -36,7 +36,7 @@ module.exports.take_screenshot = (event, context, cb) => {
  
   console.log(`Snapshotting ${targetUrl} to s3://${targetBucket}/${targetFilename}`);
   //take snapshot
-    const cmd = `./phantomjs/phantomjs_linux-x86_64 --debug=yes --ignore-ssl-errors=true ./phantomjs/test.js ${targetUrl}`; // eslint-disable-line max-len
+    const cmd = `./phantomjs/phantomjs_linux-x86_64 --debug=yes --ignore-ssl-errors=true ./phantomjs/screenshot.js ${targetUrl}`; // eslint-disable-line max-len
     //const cmd =`./phantomjs/phantomjs_osx --debug=no --ignore-ssl-errors=true ./phantomjs/test.js ${targetUrl}`;
     console.log(cmd);
     exec(cmd, (error, stdout, stderr) => {

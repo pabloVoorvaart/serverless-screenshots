@@ -13,5 +13,5 @@ page.open(url);
 console.log(url);
 console.log(filename);
 page.onLoadFinished = function() {
-   page.render('screenshot/' + 'targetFilename' + '.png');
+   page.render('/tmp/' + 'targetFilename' + '.png');
    phantom.exit();}
